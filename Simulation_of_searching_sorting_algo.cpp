@@ -4,9 +4,8 @@ compare their timings of a list of 1000 elements.*/
 #include <stdlib.h>
 #include <time.h>
 using namespace std;
-void linearSearch(int arr[], int n, int key)
+void linearSearch(int *arr, int n, int key)  //Linear search algorithm..
 {
-    clock_t start = clock();
     int flag = 1;
     for (int i = 0; i < n; i++)
     {
@@ -20,12 +19,9 @@ void linearSearch(int arr[], int n, int key)
     }
     if (flag == 1)
         cout << "No result found for " << key;
-
-    cout << fixed << "\nExecution time of Linear Search: " << float(clock() - start) / CLOCKS_PER_SEC << endl;
 }
-void binarySearch(int arr[], int left, int right, int key)
+void binarySearch(int *arr, int left, int right, int key)  //Binary search algorithm..
 {
-    clock_t start = clock();
     int flag = 1;
     while (left <= right)
     {
@@ -44,19 +40,15 @@ void binarySearch(int arr[], int left, int right, int key)
     }
     if (flag == 1)
         cout << "No result found for " << key;
-
-    cout << fixed << "\nExecution time of Binary Search: " << float(clock() - start) / CLOCKS_PER_SEC << endl;
 }
-void swap(int &x, int &y)
+void swap(int &x, int &y) //swap function..
 {
     int temp = x;
     x = y;
     y = temp;
 }
-
-int bubbleSort(int arr[], int n)
+int bubbleSort(int *arr, int n)   //Bubble sort algorithm..
 {
-    clock_t start = clock();
     for (int i = 0; i < n - 1; i++)
     {
         for (int j = 0; j < n - i - 1; j++)
@@ -65,11 +57,9 @@ int bubbleSort(int arr[], int n)
                 swap(arr[j], arr[j + 1]);
         }
     }
-    cout << fixed << "\nExecution time of Bubble Sort: " << float(clock() - start) / CLOCKS_PER_SEC << endl;
     return 0;
 }
-
-int partition(int arr[], int low, int high)
+int partition(int *arr, int low, int high)  //partition algorithm..
 {
     int pivot = arr[high];
     int i = low - 1;
@@ -85,7 +75,7 @@ int partition(int arr[], int low, int high)
     swap(arr[i + 1], arr[high]);
     return i + 1;
 }
-void quickSort(int arr[], int low, int high)
+void quickSort(int *arr, int low, int high)  //Quick sort algorithm..
 {
     if (low < high)
     {
@@ -94,7 +84,7 @@ void quickSort(int arr[], int low, int high)
         quickSort(arr, partition_index + 1, high);
     }
 }
-void printArray(int arr[], int size)
+void printArray(int *arr, int size)  //A function to print array contents..
 {
     for (int i = 0; i < size; i++)
         cout << arr[i] << " ";
@@ -103,25 +93,41 @@ void printArray(int arr[], int size)
 int main()
 {
     int size = 1000;
-    int *Arr = (int *)malloc(size * sizeof(int));
-    for (int i = 0; i < size; i++)
+    int *Arr = (int *)malloc(size * sizeof(int));   
+    for (int i = 0; i < size; i++)   //Setting 1k array elements for searching (sorted)..
         Arr[i] = i * 2;
 
     int *Arr2 = (int *)malloc(size * sizeof(int));
-    for (int i = 0; i < size; i++)
+    for (int i = 0; i < size; i++)    //Setting 1k array elements for sorting (randomly)..
         Arr2[i] = rand() % 365;
-
+    
     cout << "\n......For Searching comparision......\n Array[1000]:\n"; // Searching comparision..
     printArray(Arr, size);
+    clock_t t1;
+    double time_taken;
+    t1=clock();
     linearSearch(Arr, size, 1998);
+    t1= clock()-t1;
+    time_taken=((double)t1)/CLOCKS_PER_SEC;    //execution time calculation..
+    cout<<"Time taken by Linear search is : "<<time_taken<<endl;
+    t1=clock();
     binarySearch(Arr, 0, 999, 1998);
+    t1=clock()-t1;
+    time_taken=((double)t1)/CLOCKS_PER_SEC;
+    cout<<"\nTime taken by Binary search is : "<<time_taken;
 
     cout << "\n......For Sorting comparision......\nRandom Array[1000]:\n"; // Sorting comparision..
     printArray(Arr2, size);
+    t1=clock();
     bubbleSort(Arr2, size);
-    clock_t start = clock();
+    t1=clock()-t1;
+    time_taken=((double)t1)/CLOCKS_PER_SEC;
+    cout<<"\nTime taken by Bubble sort is : "<<time_taken;
+    t1=clock();
     quickSort(Arr2, 0, 999);
-    cout << fixed << "\nExecution time of Quick Sort: " << float(clock() - start) / CLOCKS_PER_SEC << endl;
+    t1=clock()-t1;
+    time_taken=((double)t1)/CLOCKS_PER_SEC;
+    cout<<"\nTime taken by Quick sort is : "<<time_taken;
 
     return 0;
 }
